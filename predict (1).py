@@ -37,10 +37,10 @@ def load_checkpoint(checkpoint_path):
         
         return model
         
-def process_image(image):
+def process_image(image_path):
     
     # From PIL import image path
-    im = Image.open(image)
+    im = Image.open(image_path)
     
     # dimensions
     w = 256
@@ -72,11 +72,11 @@ def process_image(image):
     
     return image
 
-def predict(image, model, topk=5):
+def predict(image_path, model, topk=5):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model.to(device)
     
-    image = torch.tensor(process_image(image)).type(torch.FloatTensor).unsqueeze(0).to(device)
+    image = torch.tensor(process_image(image_path)).type(torch.FloatTensor).unsqueeze(0).to(device)
     
     load_checkpoint('checkpoint.pth')
     
@@ -116,19 +116,25 @@ def main():
         
     model = load_checkpoint(args.checkpoint)
     
-    image_tensor = process_image(args.image)
+    #image_tensor = process_image(args.image_path)
     
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
-    image = args.image
+    image_path = args.image_path
     
-    prediction = predict(image, model, topk=5)
+    prediction = predict(image_path, model, topk=5)
     
     print
     return prediction
 
 if __name__ == '__main__':
     main()
+
+
+    
+                        
+    
+    
 
 
     
